@@ -1,0 +1,24 @@
+--- #YAML:1.0
+name:               App-Monupco-OpenShift-Express
+version:            0.01
+abstract:           monupco.com registration agent for OpenShift Express / Perl applications
+author:
+    - Alexander Todorov <atodorov@otb.bg>
+license:            MIT
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    JSON:            0
+    LWP::UserAgent:  0
+    Pod::Simple:     0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.55_02
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
