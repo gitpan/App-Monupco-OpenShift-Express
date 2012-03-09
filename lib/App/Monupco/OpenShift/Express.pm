@@ -7,7 +7,7 @@
 #####################################################################################
 
 package App::Monupco::OpenShift::Express;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $NAME = "monupco-openshift-express-perl";
 
 use App::Monupco::OpenShift::Express::Parser;
@@ -31,7 +31,7 @@ my $data = {
 };
 
 my $pod_parsed = "";
-my $parser = Monupco::OpenShift::Express::Parser->new();
+my $parser = App::Monupco::OpenShift::Express::Parser->new();
 $parser->output_string( \$pod_parsed );
 $parser->parse_file("$ENV{'OPENSHIFT_DATA_DIR'}/perl5lib/lib/perl5/x86_64-linux-thread-multi/perllocal.pod");
 
@@ -66,11 +66,42 @@ __END__
 
 =head1 NAME
 
-Monupco::OpenShift::Express - monupco.com registration agent for OpenShift Express / Perl applications
+App::Monupco::OpenShift::Express - monupco.com registration agent for OpenShift Express / Perl applications
 
 =head1 SYNOPSIS
 
-  use Monupco::OpenShift::Express;
+To register your OpenShift Perl application to Monupco do the following:
+
+1) Create a Perl application on OpenShift:
+
+    rhc-create-app -a myapp -t perl-5.10
+
+2) Add a dependency in your deplist.txt file
+
+    cd ./myapp/
+    echo "App::Monupco::OpenShift::Express" >> deplist.txt
+
+3) Set your username and application name in the ./data/MONUPCO_SETTINGS file
+
+    echo "export MONUPCO_USER_ID=YourUserID"  > ./data/MONUPCO_SETTINGS
+
+4) Enable the registration script in .openshift/action_hooks/post_deploy
+
+    source $OPENSHIFT_REPO_DIR/data/MONUPCO_SETTINGS
+    $OPENSHIFT_APP_DIR/perl5lib/lib/perl5/App/Monupco/OpenShift/Express.pm
+
+5) Commit your changes
+
+    git add .
+    git commit -m "enable monupco registration"
+
+6) Then push your application to OpenShift
+
+    git push
+
+That's it, you can now check your application statistics at
+http://monupco.com
+
 
 =head1 DESCRIPTION
 
@@ -85,22 +116,6 @@ Alexander Todorov, E<lt>atodorov()otb.bgE<gt>
 
  Copyright (c) 2012, Alexander Todorov <atodorov()otb.bg>
 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
+ This module is free software and is published under the same terms as Perl itself.
 
 =cut
